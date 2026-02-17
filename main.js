@@ -2,6 +2,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const generateBtn = document.getElementById('generate-btn');
     const numbersDisplay = document.querySelector('.numbers-display');
+    const themeToggleBtn = document.getElementById('theme-toggle-btn');
+    const body = document.body;
 
     const getColorForNumber = (number) => {
         if (number <= 10) return '#fbc400'; // Yellow
@@ -36,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         plusSign.textContent = '+';
         plusSign.style.fontSize = '2rem';
         plusSign.style.lineHeight = '50px';
-        plusSign.style.color = '#82aaff';
+        plusSign.style.color = 'var(--plus-color)';
         plusSign.style.margin = '0 10px';
         numbersDisplay.appendChild(plusSign);
 
@@ -47,7 +49,29 @@ document.addEventListener('DOMContentLoaded', () => {
         numbersDisplay.appendChild(bonusBall);
     };
 
-    generateBtn.addEventListener('click', generateAndDisplayNumbers);
+    const toggleTheme = () => {
+        const currentTheme = body.classList.contains('light-mode') ? 'light' : 'dark';
+        if (currentTheme === 'dark') {
+            body.classList.add('light-mode');
+            localStorage.setItem('theme', 'light');
+            themeToggleBtn.textContent = '🌙';
+        } else {
+            body.classList.remove('light-mode');
+            localStorage.setItem('theme', 'dark');
+            themeToggleBtn.textContent = '☀️';
+        }
+    };
 
+    themeToggleBtn.addEventListener('click', toggleTheme);
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggleBtn.textContent = '🌙';
+    } else {
+        themeToggleBtn.textContent = '☀️';
+    }
+
+    generateBtn.addEventListener('click', generateAndDisplayNumbers);
     generateAndDisplayNumbers();
 });
